@@ -84,7 +84,9 @@ class _LoginState extends State<Login> {
                       labelText: "Email",
                       hintText: "Enter your email",
                       border: OutlineInputBorder(),
+
                     ),
+
                     validator: (value){
                       if(value == null || value.isEmpty ){
                         return "Email incorrect try again";
@@ -93,6 +95,7 @@ class _LoginState extends State<Login> {
                       return null;
                     },
                     controller: emailController,
+
 
 
                   ),

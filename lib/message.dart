@@ -1,18 +1,7 @@
+
+
+
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'App de livres',
-      home: ChatPage(),
-    );
-  }
-}
 
 class ChatPage extends StatefulWidget {
   @override
@@ -38,7 +27,14 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Discussion sur les livres'),
+        title: const Text('Discussion sur les livres',
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Colors.black
+
+        ) ,
+        ),
       ),
       body: Column(
         children: [
@@ -64,10 +60,17 @@ class _ChatPageState extends State<ChatPage> {
                   child: TextField(
                     controller: _controller,
                     decoration: const InputDecoration(
+
                       labelText: 'Votre message',
 
                       border: OutlineInputBorder(),
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24
+                      )
                     ),
+
                     onSubmitted: (value) => _sendMessage(),
                   ),
                 ),
