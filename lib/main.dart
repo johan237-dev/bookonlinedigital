@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-      title: "LIREO  BIBLOTHEQUE SCOLAIRE",
+      title: "LIREO  BIBLIOTHEQUE SCOLAIRE",
       theme: ThemeData(
        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue)
       ),

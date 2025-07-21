@@ -1,10 +1,19 @@
+import 'dart:io';
+
+import 'package:bookonlinedigital/pdfpage.dart';
+import 'package:bookonlinedigital/pdfviewpage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'dart:html' as html;
+
+
+
 
 class Livres5eme extends StatelessWidget {
    Livres5eme({super.key});
   final CollectionReference livres5eme = FirebaseFirestore.instance.collection("Livres5eme");
-
+   final String pdfPath = 'assets/asset/maths.pdf';
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -53,12 +62,63 @@ class Livres5eme extends StatelessWidget {
                                       return AlertDialog(
                                         content: Column(
                                           children: [
-                                            Image.network(image,width: 200,height: 300,fit: BoxFit.cover,)
+                                            Image.network(image,width: 200,height: 300,fit: BoxFit.cover,),
+                                            
+                                            const SizedBox(height: 20),
+                                            
+                                            ElevatedButton(
+                                              style: ButtonStyle(
+                                                backgroundColor: WidgetStateProperty.all(Colors.blue)
+                                              ),
+                                                onPressed: () async {
+                                                  if (kIsWeb) {
+                                                    html.window.open('assets/maths.pdf', '_blank');
+                                                  } else {
+                                                    // Appel à Pdfpage et navigation vers Pdfviewpage pour Android/iOS
+                                                  }
+                                                  showDialog(
+                                                    context: context,
+                                                    barrierDismissible: false,
+                                                    builder: (_) => const Center(child: CircularProgressIndicator()),
+                                                  );
+                                                  try {
+                                                    final file = await Pdfpage.loadPdfFromAsset('assets/asset/maths.pdf');
+                                                    Navigator.pop(context); // Ferme le loader
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(builder: (_) => Pdfviewpage(file: file)
+                                                        )
+                                                    );
+                                                  } catch (e) {
+                                                    Navigator.pop(context); // ferme le dialog en cas d'erreur
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (_) => AlertDialog(
+                                                        title: Text("Erreur"),
+                                                        content: Text("$e"),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () => Navigator.pop(context),
+                                                            child: const Text("OK"),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                                child: const Text("Lire",
+                                                style: TextStyle(
+                                                  fontSize: 24,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black
+                                                ),)
+                                            )
                                           ],
                                         ),
                                       );
 
-                                    });
+                                    }
+                                    );
                               },
 
 
@@ -92,4 +152,7 @@ class Livres5eme extends StatelessWidget {
 
     );
   }
+}
+void OpenPdf(BuildContext context, File file){
+  Navigator.push(context, MaterialPageRoute(builder:(context)=> Pdfviewpage(file: file)));
 }
